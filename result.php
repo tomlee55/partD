@@ -79,7 +79,7 @@ if($minimumcost > $maximumcost){
 	
  	if ($row>0){
  		print "<h1>There are {$row} records found:</h1>";
-                print "<a href=winestore.php>Index Page</a>";
+                print "<a href=search.php>Index Page</a>";
  		print "\n<table border=1 align=\"center\">\n".
               "<tr>".
 		      "<td>Wine Name </td>".
