@@ -20,16 +20,17 @@ try{
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
    // Start a query ...
-    $query = "SELECT DISTINCT wine.wine_name AS winename,
+    $query = "SELECT DISTINCT wine.wine_name AS winename,cost,on_hand,qty,
 			  wine.year AS wineyear,
               winery.winery_name AS wineryname,
               region.region_name AS regionname,
-              wine.wine_id AS wineID                       
-              FROM wine,grape_variety,winery,region,wine_variety,inventory
+              wine.wine_id AS wineID
+              FROM wine,grape_variety,winery,region,wine_variety,inventory,items
               WHERE wine.winery_id = winery.winery_id AND
 			  wine_variety.variety_id = grape_variety.variety_id AND
 			  wine_variety.wine_id = wine.wine_id AND
 			  winery.region_id = region.region_id AND
+			  wine.wine_id = items.wine_id AND
 			  inventory.wine_id = wine.wine_id "; 
 
 // 
@@ -56,7 +57,7 @@ if(isset($minimumstock) && $minimumstock != "")
 $query .= " AND inventory.on_hand >= \"{$minimumstock}\""; 
 
 if(isset($minimumcost) && $minimumcost != "") 
-$query .= " AND inventory.cost >= \"{$minimumcost}\""; 
+$query .= " AND invertory.cost >= \"{$minimumcost}\""; 
 
 if(isset($maximumcost) && $maximumcost !="") 
 $query .=" AND inventory.cost <= \"{$maximumcost}\""; 
@@ -78,7 +79,7 @@ if($minimumcost > $maximumcost){
 	
  	if ($row>0){
  		print "<h1>There are {$row} records found:</h1>";
-                print "<a href=search.php>Index Page</a>";
+                print "<a href=winestore.php>Index Page</a>";
  		print "\n<table border=1 align=\"center\">\n".
               "<tr>".
 		      "<td>Wine Name </td>".
@@ -88,6 +89,9 @@ if($minimumcost > $maximumcost){
  		      "<td>WineYear </td>".
 		      "<td>WineryName </td>".
 		      "<td>Region </td>".
+			  "<td>cost </td>".
+			  "<td>Availble bottles number </td>".
+			  "<td>sales revenue </td>".
               "</tr>";
                 
 			 
@@ -110,7 +114,10 @@ if($minimumcost > $maximumcost){
 				  "<td>{$variety[2]["variety"]}</td>".
 				  "<td>{$data["wineyear"]}</td>".
 				  "<td>{$data["wineryname"]}</td>".
-				  "<td>{$data["regionname"]}</td></form></tr>";
+				  "<td>{$data["regionname"]}</td>".
+				  "<td>{$data["cost"]}</td>".
+				  "<td>{$data["on_hand"]}</td>".
+				  "<td>{$data["qty"]}</td></form></tr>";
 	}
     
 		 print"\n</table>";
