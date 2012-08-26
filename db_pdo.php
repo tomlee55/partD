@@ -10,7 +10,7 @@
   */
   
   define('DB_HOST', 'yallara.cs.rmit.edu.au');
-  define('DB_PORT', '50664');
+  define('DB_PORT', '50644');
   define('DB_NAME', 'winestore');
   define('DB_USER', 'winestore');
   define('DB_PW', '19860309');

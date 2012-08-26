@@ -1,3 +1,7 @@
+<?php 
+require 'dropdown.php';
+?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -12,7 +16,7 @@ h1{text-align:center}
 </head>
 <body>
 
-<h1>Wine Store Searching</h1>
+<h1>Winestore partD</h1>
 
 <form action="search.php" method="GET">
 <table border="5" cellspadding="20" align="center">
@@ -27,19 +31,23 @@ h1{text-align:center}
      </tr>
      <tr>
          <td>Region Name:</td>
-         <td><select name="regionname"></select></td>
+         <td><select name="regionname">
+		 <?php dropdown("region","region_name","regionname","ALL")?></select></td>
      </tr>
 	 <tr>
 		<td>Grape Variety:</td>
-		<td><select name="grapevariety"></td>
+		<td><select name="grapevariety">
+		<?php dropdown("grape_variety","variety","grapevariety","ALL")?></td>
 	</tr>
      <tr>
          <td>Start year:</td>
-         <td><select name="startyear"></select></td>
+         <td><select name="startyear">
+		 <?php dropdown("wine","year","startyear","0")?></select></td>
      </tr>
      <tr>
          <td>End Year:</td>
-         <td><select name="endyear"></select></td>
+         <td><select name="endyear">
+		 <?php dropdown("wine","year","endyear","1999")?></select></td>
      </tr>
      <tr>
          <td>Minimum Wine In Stock:</td>
@@ -64,4 +72,5 @@ h1{text-align:center}
 </table></form>
 </body>
 </html>
+
 
