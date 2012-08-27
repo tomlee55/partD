@@ -20,7 +20,7 @@ try{
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
    // Start a query ...
-    $query = "SELECT DISTINCT wine.wine_name AS winename,cost,on_hand,qty,
+    $query = "SELECT DISTINCT wine.wine_name AS winename,cost,on_hand,SUM(qty) qty,SUM(price) price,
 			  wine.year AS wineyear,
               winery.winery_name AS wineryname,
               region.region_name AS regionname,
@@ -56,6 +56,14 @@ if($startyear > $endyear){
 if(isset($minimumstock) && $minimumstock != "") 
 $query .= " AND inventory.on_hand >= \"{$minimumstock}\""; 
 
+if($minimumInOrder != 0) {
+            $query .= " GROUP BY items.wine_id
+                        HAVING qty >= $min_num_ordered
+                        ORDER BY wine_name";
+        }
+        else $query .= ' GROUP BY items.wine_id
+                         ORDER BY wine_name';
+
 if(isset($minimumcost) && $minimumcost != "") 
 $query .= " AND invertory.cost >= \"{$minimumcost}\""; 
 
@@ -67,8 +75,8 @@ if($minimumcost > $maximumcost){
    }
        
         
-        $query.=" GROUP BY wine.wine_id".
-	       " ORDER BY winename,wineyear,wineryname,regionname";
+  //      $query.=" GROUP BY wine.wine_id".
+//	       " ORDER BY winename,wineyear,wineryname,regionname";
         $statement = $pdo->prepare($query);
   	$statement->execute($values);
  	$results = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -91,6 +99,7 @@ if($minimumcost > $maximumcost){
 		      "<td>Region </td>".
 			  "<td>cost </td>".
 			  "<td>Availble bottles number </td>".
+                          "<td>Total stock sold </td>".
 			  "<td>sales revenue </td>".
               "</tr>";
                 
@@ -117,7 +126,8 @@ if($minimumcost > $maximumcost){
 				  "<td>{$data["regionname"]}</td>".
 				  "<td>{$data["cost"]}</td>".
 				  "<td>{$data["on_hand"]}</td>".
-				  "<td>{$data["qty"]}</td></form></tr>";
+                  "<td>{$data["qty"]}</td>".
+				  "<td>{$data["price"]}</td></form></tr>";
 	}
     
 		 print"\n</table>";

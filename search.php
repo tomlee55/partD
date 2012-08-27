@@ -18,7 +18,7 @@ h1{text-align:center}
 
 <h1>Winestore partD</h1>
 
-<form action="search.php" method="GET">
+<form action="result.php" method="GET">
 <table border="5" cellspadding="20" align="center">
 
      <tr>
